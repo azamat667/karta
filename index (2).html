@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тегін білім ресурстарының картасы</title>
+<style>
+:root {
+  --bg: #f2f6f8;
+  --surface: #ffffff;
+  --ink: #14263a;
+  --ink-soft: #4a5d70;
+  --line: #d3dde5;
+  --sky: #1f7fb8;
+  --wheat: #c98f1e;
+  --sage: #3f8262;
+  --plum: #86527e;
+  --slate: #5b6b7c;
+  --coral: #c25b4a;
+  --teal: #1f8a7a;
+  --indigo: #4a5bb8;
+  --free-bg: #dff1e8;
+  --free-ink: #1f5c40;
+  --warn-bg: #fbeed0;
+  --warn-ink: #7a5208;
+  --paid-bg: #f0e0ee;
+  --paid-ink: #6a3663;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1a24;
+    --surface: #172634;
+    --ink: #e6eef5;
+    --ink-soft: #a3b4c4;
+    --line: #2b3d4f;
+    --sky: #5db4e6;
+    --wheat: #e6b04c;
+    --sage: #6fc09a;
+    --plum: #c58ebc;
+    --slate: #93a4b5;
+    --coral: #e08d7d;
+    --teal: #5fc4b3;
+    --indigo: #8f9cea;
+    --free-bg: #17392b;
+    --free-ink: #a5e0c2;
+    --warn-bg: #3d3010;
+    --warn-ink: #f0d18a;
+    --paid-bg: #3a2237;
+    --paid-ink: #e7c0e0;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1a24;
+  --surface: #172634;
+  --ink: #e6eef5;
+  --ink-soft: #a3b4c4;
+  --line: #2b3d4f;
+  --sky: #5db4e6;
+  --wheat: #e6b04c;
+  --sage: #6fc09a;
+  --plum: #c58ebc;
+  --slate: #93a4b5;
+  --coral: #e08d7d;
+  --teal: #5fc4b3;
+  --indigo: #8f9cea;
+  --free-bg: #17392b;
+  --free-ink: #a5e0c2;
+  --warn-bg: #3d3010;
+  --warn-ink: #f0d18a;
+  --paid-bg: #3a2237;
+  --paid-ink: #e7c0e0;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.55;
+}
+.wrap { max-width: 1100px; margin: 0 auto; padding: 32px 20px 56px; }
+h1 {
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  line-height: 1.12;
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+  font-weight: 800;
+}
+.lead { max-width: 64ch; color: var(--ink-soft); margin: 0 0 6px; font-size: 1.05rem; }
+.proto {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  font-size: 0.88rem;
+}
+
+/* Route: filters as stops on a line */
+.route-title { margin: 34px 0 10px; font-weight: 700; font-size: 1rem; }
+.route { position: relative; margin: 0 0 8px; padding: 6px 0 0; }
+.stops { position: relative; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.stop button {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer;
+  font: inherit; font-size: 0.9rem; color: var(--ink-soft);
+}
+.stop button[aria-pressed="true"] { color: #fff; font-weight: 700; background: var(--stop, var(--slate)); border-color: var(--stop, var(--slate)); }
+.stop button:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
+
+.count { color: var(--ink-soft); font-size: 0.9rem; margin: 14px 0 12px; }
+
+/* Cards */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--c, var(--slate));
+  border-radius: 6px;
+  padding: 16px 16px 14px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.card[hidden] { display: none; }
+.card h3 { margin: 0; font-size: 1.05rem; line-height: 1.3; }
+.cat { color: var(--c, var(--slate)); font-size: 0.85rem; font-weight: 700; }
+.card p { margin: 0; font-size: 0.93rem; color: var(--ink-soft); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: 0.78rem; padding: 3px 9px; border-radius: 4px; border: 1px solid var(--line); color: var(--ink-soft); }
+.tag.free { background: var(--free-bg); color: var(--free-ink); border-color: transparent; }
+.tag.paid { background: var(--paid-bg); color: var(--paid-ink); border-color: transparent; }
+.tag.check { background: var(--warn-bg); color: var(--warn-ink); border-color: transparent; }
+.rate { font-size: 0.85rem; color: var(--ink-soft); border-top: 1px dashed var(--line); padding-top: 8px; margin-top: auto; }
+.open {
+  display: inline-block; align-self: flex-start;
+  padding: 7px 14px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.92rem;
+  background: var(--c, var(--slate)); color: #fff;
+}
+.open:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+:root[data-theme="dark"] .open { color: #0f1a24; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .open { color: #0f1a24; } }
+
+/* Sections */
+section.block { margin-top: 44px; max-width: 68ch; }
+section.block h2 { font-size: 1.35rem; margin: 0 0 10px; }
+.criteria { margin: 0; padding-left: 1.2em; }
+.criteria li { margin-bottom: 6px; }
+.foot { margin-top: 44px; color: var(--ink-soft); font-size: 0.88rem; max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Тегін білім ресурстарының картасы</h1>
+    <p class="lead">Репетиторға немесе ақылы курсқа қаражат жетпесе, қайдан оқуға болады? Ресурстарды қажеттілік бойынша таңдаңыз.</p>
+  </header>
+
+  <div class="route-title" id="route-label">Не қажет?</div>
+  <nav class="route" aria-labelledby="route-label">
+    <ul class="stops" id="stops"></ul>
+  </nav>
+
+  <div class="count" id="count" aria-live="polite"></div>
+  <div class="grid" id="grid"></div>
+
+  <p class="foot">Бұл тізімдегі ресурстар ашық дереккөздерден жиналды. «Тексеру керек» белгісі бар карточкаларды пайдаланар алдында өзіңіз ашып тексеріңіз: платформалардың шарттары мен бағасы өзгеруі мүмкін.</p>
+</div>
+
+<script>
+(function () {
+  var CATS = [
+    { id: "all", label: "Барлығы", color: "var(--slate)" },
+    { id: "ubt", label: "ҰБТ дайындығы", color: "var(--wheat)" },
+    { id: "stem", label: "Математика, ғылым", color: "var(--sage)" },
+    { id: "english", label: "Ағылшын тілі", color: "var(--indigo)" },
+    { id: "book", label: "Кітап, оқулық", color: "var(--sky)" },
+    { id: "programming", label: "Бағдарламалау", color: "var(--teal)" },
+    { id: "youtube", label: "YouTube арналар", color: "var(--coral)" },
+    { id: "kz", label: "Қазақстандық платформалар", color: "var(--plum)" }
+  ];
+
+  var CARDS = [
+    // ҰБТ дайындығы
+    { cat: "ubt", title: "ҰБТ-ға тегін онлайн-сабақтар (Ұлттық тестілеу орталығы)",
+      text: "Сабақтар білім беру орталықтарының YouTube арналарында тікелей эфирде өтеді, жазбасы сақталады. Пәндер: қазақ тілі мен әдебиеті, Қазақстан тарихы, математика, химия, биология, физика, география.",
+      tags: [["free","Тегін"],["","Қазақша / орысша"],["check","Ағымдағы кестені тексеру керек"]],
+      url: "https://www.gov.kz/memleket/entities/edu/press/news/details/299699?lang=kk" },
+
+    // Кітап, оқулық
+    { cat: "book", title: "1–11 сынып оқулықтарының электрондық нұсқалары",
+      text: "Министрліктің ресми бетінде оқулықтардың электрондық нұсқаларына сілтемелер жиналған.",
+      tags: [["","Қазақша / орысша"],["check","Сілтемелерді тексеру керек"]],
+      url: "https://www.gov.kz/memleket/entities/edu/documents/details/353117?lang=kk" },
+    { cat: "book", title: "Okulyk.kz",
+      text: "Мектеп оқулықтары онлайн форматта, Қазақстан бағдарламасы бойынша.",
+      tags: [["","Қазақша / орысша"],["check","Тегін бөлігін тексеру керек"]],
+      url: "https://okulyk.kz/" },
+    { cat: "book", title: "Қазақстандық Ұлттық электронды кітапхана",
+      text: "Кітаптар, энциклопедиялар, сөздіктер, газет-журналдар, аудио және бейне файлдар бір жерде.",
+      tags: [["","Көп тілде"],["check","Құнын тексеру керек"]],
+      url: "https://kazneb.kz/kk" },
+    { cat: "book", title: "Kitap.kz",
+      text: "Қазақ және әлем әдебиетінің 2000-ға жуық кітабы мен 600-ден астам аудиокітабы.",
+      tags: [["","Қазақша және басқа тілдер"],["check","Тегін бөлігін тексеру керек"]],
+      url: "https://kitap.kz/" },
+    { cat: "book", title: "Project Gutenberg",
+      text: "70 000-нан астам тегін электронды кітап, негізінен классикалық әдебиет.",
+      tags: [["free","Тегін"],["","Негізінен ағылшын тілінде"]],
+      url: "https://www.gutenberg.org/" },
+    { cat: "book", title: "OpenStax",
+      text: "Университет деңгейіндегі пәндерге арналған ашық, тегін оқулықтар.",
+      tags: [["free","Тегін"],["","Ағылшын тілінде"]],
+      url: "https://openstax.org/" },
+    { cat: "book", title: "Internet Archive",
+      text: "Цифрлық кітаптар, журналдар және басқа материалдар; қолжетімділігі материалға қарай әртүрлі.",
+      tags: [["","Көп тілде"],["check","Әр материалды жеке тексеру керек"]],
+      url: "https://archive.org/" },
+
+    // Математика, ғылым
+    { cat: "stem", title: "Khan Academy",
+      text: "Бейне сабақтар мен жаттығулар: математика, жаратылыстану, экономика мен қаржы, информатика, гуманитарлық пәндер. Бөлек бөлімдер: ru.khanacademy.org/science, /economics-finance-domain, /computing, /humanities.",
+      tags: [["free","Тегін"],["","Орысша нұсқасы бар"]],
+      url: "https://ru.khanacademy.org/math" },
+    { cat: "stem", title: "PhET Interactive Simulations",
+      text: "Физика, химия, математика бойынша интерактивті симуляциялар.",
+      tags: [["free","Тегін"],["","Көп тілде"]],
+      url: "https://phet.colorado.edu/" },
+    { cat: "stem", title: "CK-12",
+      text: "Мектеп пәндеріне арналған онлайн оқыту материалдары мен жаттығулар.",
+      tags: [["free","Тегін"],["","Ағылшын тілінде"]],
+      url: "https://www.ck12.org/" },
+    { cat: "stem", title: "MIT OpenCourseWare",
+      text: "Әлемнің үздік университеттерінің бірі — MIT-тің дәрістері мен тапсырмалары ашық қолжетімді.",
+      tags: [["free","Тегін"],["","Ағылшын тілінде"]],
+      url: "https://ocw.mit.edu/" },
+    { cat: "stem", title: "Coursera",
+      text: "IT, бизнес, тіл, ғылым және басқа бағыттарда жетекші университеттер мен компаниялардан курстар.",
+      tags: [["","Тегін және ақылы курстар"],["check","Сертификат әдетте ақылы"]],
+      url: "https://www.coursera.org/" },
+    { cat: "stem", title: "Stepik",
+      text: "Бағдарламалау, математика, тіл және басқа бағыттарда өз қарқынымен оқуға, практика жасауға және сертификат алуға болатын платформа.",
+      tags: [["","Тегін және ақылы курстар"],["","Орысша"]],
+      url: "https://stepik.org/catalog" },
+
+    // Ағылшын тілі
+    { cat: "english", title: "British Council LearnEnglish Teens",
+      text: "Грамматика, сөздік, тыңдалым және оқылым жаттығулары.",
+      tags: [["free","Тегін"],["","Ағылшын тілінде"]],
+      url: "https://learnenglishteens.britishcouncil.org/" },
+    { cat: "english", title: "Duolingo",
+      text: "Ойын түрінде тіл үйрену, тегін және ақылы мүмкіндіктері бар.",
+      tags: [["","Тегін және ақылы"],["","Көп тілде"]],
+      url: "https://www.duolingo.com/" },
+    { cat: "english", title: "BBC Learning English",
+      text: "Грамматика, тыңдалым және сөздік бойынша материалдар.",
+      tags: [["free","Тегін"],["","Ағылшын тілінде"]],
+      url: "https://www.bbc.co.uk/learningenglish" },
+    { cat: "english", title: "Cambridge English",
+      text: "Ағылшын тілінен деңгей бойынша жаттығулар.",
+      tags: [["free","Тегін"],["","Ағылшын тілінде"]],
+      url: "https://www.cambridgeenglish.org/learning-english/" },
+    { cat: "english", title: "Engnovate — IELTS practice",
+      text: "IELTS емтиханына дайындалуға арналған жаттығулар.",
+      tags: [["","Тегін және ақылы"],["check","Шарттарын тексеру керек"]],
+      url: "https://engnovate.com/ielts/" },
+
+    // Бағдарламалау
+    { cat: "programming", title: "freeCodeCamp",
+      text: "Веб-бағдарламалауды нөлден үйренуге арналған толық тегін курс.",
+      tags: [["free","Тегін"],["","Ағылшын тілінде"]],
+      url: "https://www.freecodecamp.org/" },
+    { cat: "programming", title: "CS50 (Harvard)",
+      text: "Гарвард университетінің информатика мен бағдарламалаудың негіздеріне арналған әйгілі курсы.",
+      tags: [["free","Тегін"],["","Ағылшын тілінде"]],
+      url: "https://cs50.harvard.edu/x/" },
+    { cat: "programming", title: "Scratch",
+      text: "Бағдарламалаудың негіздерін ойын түрінде үйрену, жас оқушыларға қолайлы.",
+      tags: [["free","Тегін"],["","Көп тілде"]],
+      url: "https://scratch.mit.edu/" },
+    { cat: "programming", title: "W3Schools",
+      text: "Веб-бағдарламалау (HTML, CSS, JavaScript және басқалар) бойынша сабақтар мен интерактивті жаттығулар.",
+      tags: [["free","Тегін"],["","Ағылшын тілінде"]],
+      url: "https://www.w3schools.com/" },
+    { cat: "programming", title: "Sololearn",
+      text: "Бағдарламалау тілдерін AI көмегімен үйрену, телефоннан да қолайлы.",
+      tags: [["","Тегін және ақылы"],["","Орысша"]],
+      url: "https://www.sololearn.com/ru/" },
+
+    // YouTube арналары
+    { cat: "youtube", title: "3Blue1Brown",
+      text: "Математиканы көрнекі әрі түсінікті түсіндіретін әлемдегі үздік арналардың бірі.",
+      tags: [["free","Тегін"],["","Ағылшын тілінде"]],
+      url: "https://www.youtube.com/@3blue1brown" },
+    { cat: "youtube", title: "ПостНаука",
+      text: "Ғылыми-көпшілік арна, әртүрлі ғылым салалары бойынша қысқа түсіндірмелер.",
+      tags: [["free","Тегін"],["","Орысша"]],
+      url: "https://www.youtube.com/@postnauka" },
+    { cat: "youtube", title: "Periodic Videos",
+      text: "Химия профессорының арнасы, элементтер мен тәжірибелер туралы.",
+      tags: [["free","Тегін"],["","Ағылшын тілінде"]],
+      url: "https://www.youtube.com/@periodicvideos" },
+    { cat: "youtube", title: "Физика пәні (pvictor54)",
+      text: "Физика пәнін үйренуге арналған арна.",
+      tags: [["free","Тегін"],["check","Тілін тексеру керек"]],
+      url: "https://www.youtube.com/@pvictor54" },
+    { cat: "youtube", title: "Mektep-online.kz",
+      text: "Қазақстандық білім беру сайты, пәндер бойынша YouTube арналары бар.",
+      tags: [["free","Тегін"],["","Қазақша / орысша"]],
+      url: "https://mektep-online.kz/" },
+    { cat: "youtube", title: "Mektep-online: Геометрия",
+      text: "Геометрия пәні бойынша сабақтар.",
+      tags: [["free","Тегін"],["","Қазақша / орысша"]],
+      url: "https://www.youtube.com/channel/UCLTSnsgxIUWv2HdL2wp5YTg" },
+    { cat: "youtube", title: "Mektep-online: География",
+      text: "География пәні бойынша сабақтар.",
+      tags: [["free","Тегін"],["","Қазақша / орысша"]],
+      url: "https://www.youtube.com/@mektep_online_geografiya" },
+    { cat: "youtube", title: "Mektep-online: Физика",
+      text: "Физика пәні бойынша сабақтар.",
+      tags: [["free","Тегін"],["","Қазақша / орысша"]],
+      url: "https://www.youtube.com/channel/UCQkg3Grp7cAuHTXIjTxaaiQ" },
+    { cat: "youtube", title: "Mektep-online: Биология",
+      text: "Биология пәні бойынша сабақтар.",
+      tags: [["free","Тегін"],["","Қазақша / орысша"]],
+      url: "https://www.youtube.com/channel/UCiK0AUHBb5BYq0q0aolx3Lg" },
+    { cat: "youtube", title: "Mektep-online: Химия",
+      text: "Химия пәні бойынша сабақтар.",
+      tags: [["free","Тегін"],["","Қазақша / орысша"]],
+      url: "https://www.youtube.com/@mektep_online_himiya" },
+    { cat: "youtube", title: "ARMAN Kids",
+      text: "Кіші жастағы балаларға арналған білім беру-ойын-сауық арнасы.",
+      tags: [["free","Тегін"],["","Қазақша"]],
+      url: "https://www.youtube.com/channel/UCgQAZp9TzV56d6fwiiEOW4g" },
+
+    // Қазақстандық платформалар
+    { cat: "kz", title: "OpenU.kz",
+      text: "Қазақ тіліне аударылған оқулықтар мен жетекші жоғары оқу орындарының онлайн-курстары.",
+      tags: [["","Қазақша"],["check","Курстардың құнын тексеру керек"]],
+      url: "https://openu.kz/kz" },
+    { cat: "kz", title: "BilimLand",
+      text: "Мектеп пәндеріне арналған материалдар; кейбір қызметтері ақылы болуы мүмкін.",
+      tags: [["","Тегін және ақылы"],["check","Қайсысы ақылы екенін тексеру керек"]],
+      url: "https://bilimland.kz/" },
+    { cat: "kz", title: "Қазақстанның электрондық үкіметі (eGov.kz)",
+      text: "Ресми ақпарат пен мемлекеттік қызметтер, оқу орнына түсу және өзге де рәсімдер туралы мәлімет табуға болады.",
+      tags: [["free","Тегін"],["","Қазақша / орысша"]],
+      url: "https://egov.kz/" }
+  ];
+
+  var stops = document.getElementById("stops");
+  var grid = document.getElementById("grid");
+  var count = document.getElementById("count");
+  var current = "all";
+
+  function catById(id) { for (var i = 0; i < CATS.length; i++) if (CATS[i].id === id) return CATS[i]; return CATS[0]; }
+
+  function renderStops() {
+    stops.innerHTML = "";
+    CATS.forEach(function (c) {
+      var li = document.createElement("li");
+      li.className = "stop";
+      li.style.setProperty("--stop", c.color);
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-pressed", c.id === current ? "true" : "false");
+      b.textContent = c.label;
+      b.addEventListener("click", function () { current = c.id; renderStops(); applyFilter(); });
+      li.appendChild(b);
+      stops.appendChild(li);
+    });
+  }
+
+  function renderCards() {
+    grid.innerHTML = "";
+    CARDS.forEach(function (d) {
+      var c = catById(d.cat);
+      var el = document.createElement("article");
+      el.className = "card";
+      el.setAttribute("data-cat", d.cat);
+      el.style.setProperty("--c", c.color);
+      var tags = d.tags.map(function (t) { return '<span class="tag ' + t[0] + '">' + t[1] + "</span>"; }).join("");
+      el.innerHTML =
+        '<span class="cat">' + c.label + "</span>" +
+        "<h3>" + d.title + "</h3>" +
+        "<p>" + d.text + "</p>" +
+        '<div class="tags">' + tags + "</div>" +
+        '<a class="open" href="' + d.url + '" target="_blank" rel="noopener noreferrer">Сайтты ашу</a>';
+      grid.appendChild(el);
+    });
+  }
+
+  function applyFilter() {
+    var shown = 0;
+    var nodes = grid.querySelectorAll(".card");
+    for (var i = 0; i < nodes.length; i++) {
+      var ok = current === "all" || nodes[i].getAttribute("data-cat") === current;
+      nodes[i].hidden = !ok;
+      if (ok) shown++;
+    }
+    count.textContent = "Көрсетілген ресурс: " + shown;
+  }
+
+  renderStops();
+  renderCards();
+  applyFilter();
+})();
+</script>
+</body>
+</html>
